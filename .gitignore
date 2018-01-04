@@ -1,5 +1,5 @@
 # config file except version control
 ###################################
-#CONFIG.py
-#chromedriver
+CONFIG.py
+chromedriver
 test.py
