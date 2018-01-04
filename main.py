@@ -30,19 +30,28 @@ if __name__=="__main__":
     # Login end
 
     # if event evoke, parsing start
-    input("수집 ?::")
+    print("Made By HONG copyright Same:")
+    print("수집하려는 키워드의 PC,MOBILE 사용자 수를 입력하세요")
+    numstr = input(" ex: 100,100 왼쪽과 같이 포맷을 맞춘후 입력후엔터를 누르세요 ::")
+    pc,mobile = numstr.split(',')
+    input("그후 키워드를 클릭후 그래프화면이 로딩되면 엔터를 누르세요 ::")
+
     bs4 = BeautifulSoup(driver.page_source,"lxml")
     table = bs4.find('table',class_="layout-table")
     path = table.find('g',class_="highcharts-markers highcharts-series-0 highcharts-tracker")
     pathlist = path.find_all('path')
-    print(pathlist)
+    #print(pathlist)
     now = driver.current_window_handle
     driver.switch_to.window(now)
     #꺾은선
-    """
-    datadic = {}
+    print(">>> 꺾은선 추출 시작")
+    datadic = dict([('2017-01desktop', '0'), ('2017-01mobile', '0'), ('2017-02desktop', '0'), ('2017-02mobile', '0'), ('2017-03desktop', '0'), ('2017-03mobile', '0'), ('2017-04desktop', '0'), ('2017-04mobile', '0'), ('2017-05desktop', '0'), ('2017-05mobile', '0'), ('2017-06desktop', '0'), ('2017-06mobile', '0'), ('2017-07desktop', '0'), ('2017-07mobile', '0'), ('2017-08desktop', '0'), ('2017-08mobile', '0'), ('2017-09desktop', '0'), ('2017-09mobile', '0'), ('2017-10desktop', '0'), ('2017-10mobile', '0'), ('2017-11desktop', '0'), ('2017-11mobile', '0'), ('2017-12desktop', '0'), ('2017-12mobile', '0')])
     for test in driver.find_elements_by_tag_name('path')[34:62]:
         try:
+            tmp = driver.find_element_by_tag_name('path')
+            hovertmp = ActionChains(driver).move_to_element(tmp)
+            hovertmp.perform()
+            hovertmp.click()
             hover = ActionChains(driver).move_to_element(test)
             hover.perform()
             bs4 = BeautifulSoup(driver.page_source,"lxml")
@@ -51,44 +60,82 @@ if __name__=="__main__":
             datadic[key] = data
         except:
             print("오류")
-    datadic = sorted(datadic.items(), key=operator.itemgetter(0))
-    print (datadic)
-    """
+    #datadic = sorted(datadic.items(), key=operator.itemgetter(0))
+    for tmp in datadic.keys():
+        if datadic[tmp] == '0':
+            print(tmp, " parsing error ", end='')
+            datadic[tmp] = input("input ::")
+    #if len(datadic) != 24:
+     #   print("::: 그래프 겹침 발견 데이터확인필요 아래에서 누락 점검")
+      #  print(datadic)
+    print(">>> 꺾은선 추출 종료")
     #왼쪽아래 막대
+    print(">>> 왼쪽아래 추출 시작")
     idx = 0
-    datadictBySex = {}
-    for test in driver.find_elements_by_tag_name('rect')[:10]:
-        try:
-            hover = ActionChains(driver).move_to_element(test)
-            hover.perform()
-            bs4 = BeautifulSoup(driver.page_source, "lxml")
-            div = bs4.find('div', id='highcharts-4').find('div',class_='highcharts-tooltip')
-            key, data = str(div.get_text()).split(':')
-            datadictBySex[key] = data
-            idx+=1
-            if idx > 4:
-                break
-        except:
-            print("wait...")
-    datadictByAge = {}
-    idx = 0
-    for test in driver.find_elements_by_tag_name('rect'):
-        try:
-            hover = ActionChains(driver).move_to_element(test)
-            hover.perform()
-            tmp = driver.find_element_by_tag_name('path')
-            hovertmp = ActionChains(driver).move_to_element(tmp)
-            hovertmp.perform()
-            hovertmp.click()
-            time.sleep(1)
-            bs4 = BeautifulSoup(driver.page_source, "lxml")
-            div = bs4.find('div', id='highcharts-6').find('div',class_='highcharts-tooltip')
-            if '~' in div.get_text():
+    datadictBySex = {'남성desktop': '0', '남성mobile': '0', '여성desktop': '0', '여성mobile': '0'}
+    try:
+        for test in driver.find_elements_by_tag_name('rect')[:10]:
+            try:
+                tmp = driver.find_element_by_tag_name('path')
+                hovertmp = ActionChains(driver).move_to_element(tmp)
+                hovertmp.perform()
+                hovertmp.click()
+                hover = ActionChains(driver).move_to_element(test)
+                hover.perform()
+                time.sleep(0.5)
+                bs4 = BeautifulSoup(driver.page_source, "lxml")
+                div = bs4.find('div', id='highcharts-4').find('div',class_='highcharts-tooltip')
                 key, data = str(div.get_text()).split(':')
-                datadictByAge[key]=data
-        except:
-            print("wait...")
-    datadictByAge = sorted(datadictByAge.items(), key=operator.itemgetter(0))
-    datadictBySex = sorted(datadictBySex.items(), key=operator.itemgetter(0))
-    print (datadictByAge)
-    print( datadictBySex)
+                datadictBySex[key] = data
+                idx+=1
+                if idx > 4:
+                    break
+            except:
+                pass
+    except:
+        print("프로그램을 다시 시작해주세요")
+    for tmp in datadictBySex.keys():
+        if datadictBySex[tmp] == '0':
+            print(tmp, " parsing error ", end='')
+            datadictBySex[tmp] = input("input ::")
+    #if len(datadictBySex) != 4:
+     #   print("::: 성별그래프 겹침 발견 데이터확인필요 아래에서 누락 점검")
+      #  print(datadictBySex)
+    print(">>> 왼쪽아래 추출 종료")
+    # 오른쪽아래
+    print(">>> 오른쪽아래 추출 시작")
+    datadictByAge = {'0~12desktop': '0', '0~12mobile': '0', '13~19desktop': '0', '13~19mobile': '0', '20~24desktop': '0', '20~24mobile': '0', '25~29desktop': '0', '25~29mobile': '0', '30~39desktop': '0', '30~39mobile': '0', '40~49desktop': '0', '40~49mobile': '0', '50~desktop': '0', '50~mobile': '0'}
+    idx = 0
+    try:
+        for test in driver.find_elements_by_tag_name('rect')[10:]:
+            try:
+                hover = ActionChains(driver).move_to_element(test)
+                hover.perform()
+                tmp = driver.find_element_by_tag_name('path')
+                hovertmp = ActionChains(driver).move_to_element(tmp)
+                hovertmp.perform()
+                hovertmp.click()
+                time.sleep(0.5)
+                bs4 = BeautifulSoup(driver.page_source, "lxml")
+                div = bs4.find('div', id='highcharts-6').find('div',class_='highcharts-tooltip')
+                if '~' in div.get_text():
+                    key, data = str(div.get_text()).split(':')
+                    datadictByAge[key]=data
+            except:
+                pass
+
+    except:
+        print("none 월간 검색수 사용자 통계 (최근일 기준) / 나이대(%) data")
+    for tmp in datadictByAge.keys():
+        if datadictByAge[tmp] == '0':
+            print(tmp, " parsing error ", end='')
+            datadictByAge[tmp] = input("input ::")
+    #if len(datadictByAge) != 14:
+        #print("::: 나이그래프 겹침 발견 데이터확인필요 아래에서 누락 점검 ")
+        #print(datadictByAge)
+    print(">>> 오른쪽아래 추출 종료")
+    #datadictBySex = sorted(datadictBySex.items(), key=operator.itemgetter(0))
+    #datadictByAge = sorted(datadictByAge.items(), key=operator.itemgetter(0))
+    print(datadic)
+    print(datadictBySex )
+    print(datadictByAge)
