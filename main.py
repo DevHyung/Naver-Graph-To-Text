@@ -97,6 +97,8 @@ if __name__=="__main__":
     except:
         print("프로그램을 다시 시작해주세요")
     for tmp in datadictBySex.keys():
+        if 'COMMON.TERM' in tmp:
+            break
         if datadictBySex[tmp] == '0':
             print(tmp, " parsing error ", end='')
             datadictBySex[tmp] = input("input ::")
@@ -129,6 +131,7 @@ if __name__=="__main__":
     except:
         print("none 월간 검색수 사용자 통계 (최근일 기준) / 나이대(%) data")
     for tmp in datadictByAge.keys():
+
         if datadictByAge[tmp] == '0':
             print(tmp, " parsing error ", end='')
             datadictByAge[tmp] = input("input ::")
