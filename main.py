@@ -47,7 +47,7 @@ if __name__=="__main__":
     driver.switch_to.window(now)
     #꺾은선
     print(">>> 꺾은선 추출 시작")
-    datadic = dict([('2017-01desktop', '0'), ('2017-01mobile', '0'), ('2017-02desktop', '0'), ('2017-02mobile', '0'), ('2017-03desktop', '0'), ('2017-03mobile', '0'), ('2017-04desktop', '0'), ('2017-04mobile', '0'), ('2017-05desktop', '0'), ('2017-05mobile', '0'), ('2017-06desktop', '0'), ('2017-06mobile', '0'), ('2017-07desktop', '0'), ('2017-07mobile', '0'), ('2017-08desktop', '0'), ('2017-08mobile', '0'), ('2017-09desktop', '0'), ('2017-09mobile', '0'), ('2017-10desktop', '0'), ('2017-10mobile', '0'), ('2017-11desktop', '0'), ('2017-11mobile', '0'), ('2017-12desktop', '0'), ('2017-12mobile', '0')])
+    datadic = dict([('2017-01desktop', '-1'), ('2017-01mobile', '-1'), ('2017-02desktop', '-1'), ('2017-02mobile', '-1'), ('2017-03desktop', '-1'), ('2017-03mobile', '-1'), ('2017-04desktop', '-1'), ('2017-04mobile', '-1'), ('2017-05desktop', '-1'), ('2017-05mobile', '-1'), ('2017-06desktop', '-1'), ('2017-06mobile', '-1'), ('2017-07desktop', '-1'), ('2017-07mobile', '-1'), ('2017-08desktop', '-1'), ('2017-08mobile', '-1'), ('2017-09desktop', '-1'), ('2017-09mobile', '-1'), ('2017-10desktop', '-1'), ('2017-10mobile', '-1'), ('2017-11desktop', '-1'), ('2017-11mobile', '-1'), ('2017-12desktop', '-1'), ('2017-12mobile', '-1')])
     for test in driver.find_elements_by_tag_name('path')[34:62]:
         try:
             tmp = driver.find_element_by_tag_name('path')
@@ -64,7 +64,7 @@ if __name__=="__main__":
             print("오류")
     #datadic = sorted(datadic.items(), key=operator.itemgetter(0))
     for tmp in datadic.keys():
-        if datadic[tmp] == '0':
+        if datadic[tmp] == '-1':
             print(tmp, " parsing error ", end='')
             datadic[tmp] = input("input ::")
     #if len(datadic) != 24:
@@ -74,7 +74,7 @@ if __name__=="__main__":
     #왼쪽아래 막대
     print(">>> 왼쪽아래 추출 시작")
     idx = 0
-    datadictBySex = {'남성desktop': '0', '남성mobile': '0', '여성desktop': '0', '여성mobile': '0'}
+    datadictBySex = {'남성desktop': '-1', '남성mobile': '-1', '여성desktop': '-1', '여성mobile': '-1'}
     try:
         for test in driver.find_elements_by_tag_name('rect')[:10]:
             try:
@@ -99,7 +99,7 @@ if __name__=="__main__":
     for tmp in datadictBySex.keys():
         if 'COMMON.TERM' in tmp:
             break
-        if datadictBySex[tmp] == '0':
+        if datadictBySex[tmp] == '-1':
             print(tmp, " parsing error ", end='')
             datadictBySex[tmp] = input("input ::")
     #if len(datadictBySex) != 4:
@@ -108,7 +108,7 @@ if __name__=="__main__":
     print(">>> 왼쪽아래 추출 종료")
     # 오른쪽아래
     print(">>> 오른쪽아래 추출 시작")
-    datadictByAge = {'0~12desktop': '0', '0~12mobile': '0', '13~19desktop': '0', '13~19mobile': '0', '20~24desktop': '0', '20~24mobile': '0', '25~29desktop': '0', '25~29mobile': '0', '30~39desktop': '0', '30~39mobile': '0', '40~49desktop': '0', '40~49mobile': '0', '50~desktop': '0', '50~mobile': '0'}
+    datadictByAge = {'0~12desktop': '-1', '0~12mobile': '-1', '13~19desktop': '-1', '13~19mobile': '-1', '20~24desktop': '-1', '20~24mobile': '-1', '25~29desktop': '-1', '25~29mobile': '-1', '30~39desktop': '-1', '30~39mobile': '-1', '40~49desktop': '-1', '40~49mobile': '-1', '50~desktop': '-1', '50~mobile': '-1'}
     idx = 0
     try:
         for test in driver.find_elements_by_tag_name('rect')[10:]:
@@ -132,7 +132,7 @@ if __name__=="__main__":
         print("none 월간 검색수 사용자 통계 (최근일 기준) / 나이대(%) data")
     for tmp in datadictByAge.keys():
 
-        if datadictByAge[tmp] == '0':
+        if datadictByAge[tmp] == '-1':
             print(tmp, " parsing error ", end='')
             datadictByAge[tmp] = input("input ::")
     #if len(datadictByAge) != 14:
