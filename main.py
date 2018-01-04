@@ -149,7 +149,7 @@ if __name__=="__main__":
             f.write(tmp+',')
         f.write('\n')
         for tmp in datadic.keys():
-            f.write(datadic[tmp]+',')
+            f.write(str(datadic[tmp]).replace(',','')+',')
         f.write('\n')
         ##
         for tmp in datadictBySex.keys():
@@ -159,7 +159,10 @@ if __name__=="__main__":
             f.write(datadictBySex[tmp]+'%,')
         f.write('\n')
         for tmp in datadictBySex.keys():
-            f.write((pc*float(datadictBySex[tmp]))/100.0+'%,')
+            if 'mobile' in tmp:
+                f.write(str(round((mobile*float(datadictBySex[tmp]))/100.0))+',')
+            else:
+                f.write(str(round((pc * float(datadictBySex[tmp])) / 100.0)) + ',')
         f.write('\n')
         ##
         for tmp in datadictByAge.keys():
@@ -169,5 +172,8 @@ if __name__=="__main__":
             f.write(datadictByAge[tmp]+'%,')
         f.write('\n')
         for tmp in datadictByAge.keys():
-            f.write((pc*float(datadictByAge[tmp]))/100.0+'%,')
+            if 'mobile' in tmp:
+                f.write(str( round((mobile*float(datadictByAge[tmp]))/100.0))+',')
+            else:
+                f.write(str(round((pc * float(datadictByAge[tmp])) / 100.0)) + ',')
         f.write('\n')
