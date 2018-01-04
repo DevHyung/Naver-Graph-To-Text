@@ -1,0 +1,2 @@
+NAVER_ID = "khuphj"
+NAVER_PW = "g2820480G!"

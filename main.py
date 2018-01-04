@@ -28,7 +28,7 @@ if __name__=="__main__":
     driver.find_element_by_xpath('//*[@id="container"]/my-screen/div/div[1]/div/my-screen-board/div/div[1]/ul/li[3]/a').click()
     driver.switch_to.window(driver.window_handles[1])
     # Login end
-
+    title = ""
     # if event evoke, parsing start
     print("Made By HONG copyright Same:")
     print("수집하려는 키워드의 PC,MOBILE 사용자 수를 입력하세요")
@@ -40,6 +40,8 @@ if __name__=="__main__":
     table = bs4.find('table',class_="layout-table")
     path = table.find('g',class_="highcharts-markers highcharts-series-0 highcharts-tracker")
     pathlist = path.find_all('path')
+
+    title = bs4.find('h4',class_='modal-title').find('span',class_='ng-binding').get_text()
     #print(pathlist)
     now = driver.current_window_handle
     driver.switch_to.window(now)
@@ -139,3 +141,33 @@ if __name__=="__main__":
     print(datadic)
     print(datadictBySex )
     print(datadictByAge)
+    # file
+    pc = int(pc)
+    mobile = int(mobile)
+    with open(title+'.csv','w') as f:
+        for tmp in datadic.keys():
+            f.write(tmp+',')
+        f.write('\n')
+        for tmp in datadic.keys():
+            f.write(datadic[tmp]+',')
+        f.write('\n')
+        ##
+        for tmp in datadictBySex.keys():
+            f.write(tmp+',')
+        f.write('\n')
+        for tmp in datadictBySex.keys():
+            f.write(datadictBySex[tmp]+'%,')
+        f.write('\n')
+        for tmp in datadictBySex.keys():
+            f.write((pc*float(datadictBySex[tmp]))/100.0+'%,')
+        f.write('\n')
+        ##
+        for tmp in datadictByAge.keys():
+            f.write(tmp+',')
+        f.write('\n')
+        for tmp in datadictByAge.keys():
+            f.write(datadictByAge[tmp]+'%,')
+        f.write('\n')
+        for tmp in datadictByAge.keys():
+            f.write((pc*float(datadictByAge[tmp]))/100.0+'%,')
+        f.write('\n')
