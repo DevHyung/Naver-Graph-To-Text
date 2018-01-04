@@ -12,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from bs4 import BeautifulSoup
 from CONFIG import *
+import operator
 import time
 if __name__=="__main__":
     # Setting variable
@@ -25,8 +26,11 @@ if __name__=="__main__":
     time.sleep(1)
     driver.find_element_by_xpath('/html/body/my-app/wrap/welcome-beginner-layer-popup/div[2]/div[1]/a').click()
     driver.find_element_by_xpath('//*[@id="container"]/my-screen/div/div[1]/div/my-screen-board/div/div[1]/ul/li[3]/a').click()
-    # Login end
     driver.switch_to.window(driver.window_handles[1])
+    # Login end
+
+    # if event evoke, parsing start
+    input("수집 ?::")
     bs4 = BeautifulSoup(driver.page_source,"lxml")
     table = bs4.find('table',class_="layout-table")
     path = table.find('g',class_="highcharts-markers highcharts-series-0 highcharts-tracker")
@@ -34,12 +38,57 @@ if __name__=="__main__":
     print(pathlist)
     now = driver.current_window_handle
     driver.switch_to.window(now)
-    for test in driver.find_elements_by_tag_name('path'):
+    #꺾은선
+    """
+    datadic = {}
+    for test in driver.find_elements_by_tag_name('path')[34:62]:
         try:
             hover = ActionChains(driver).move_to_element(test)
             hover.perform()
-            time.sleep(1)
+            bs4 = BeautifulSoup(driver.page_source,"lxml")
+            div = bs4.find('div',class_='highcharts-tooltip')
+            key,data = str(div.get_text()).split(':')
+            datadic[key] = data
         except:
             print("오류")
-
-    "https://manage.searchad.naver.com/customers/1316664/tool/keyword-planner"
+    datadic = sorted(datadic.items(), key=operator.itemgetter(0))
+    print (datadic)
+    """
+    #왼쪽아래 막대
+    idx = 0
+    datadictBySex = {}
+    for test in driver.find_elements_by_tag_name('rect')[:10]:
+        try:
+            hover = ActionChains(driver).move_to_element(test)
+            hover.perform()
+            bs4 = BeautifulSoup(driver.page_source, "lxml")
+            div = bs4.find('div', id='highcharts-4').find('div',class_='highcharts-tooltip')
+            key, data = str(div.get_text()).split(':')
+            datadictBySex[key] = data
+            idx+=1
+            if idx > 4:
+                break
+        except:
+            print("wait...")
+    datadictByAge = {}
+    idx = 0
+    for test in driver.find_elements_by_tag_name('rect'):
+        try:
+            hover = ActionChains(driver).move_to_element(test)
+            hover.perform()
+            tmp = driver.find_element_by_tag_name('path')
+            hovertmp = ActionChains(driver).move_to_element(tmp)
+            hovertmp.perform()
+            hovertmp.click()
+            time.sleep(1)
+            bs4 = BeautifulSoup(driver.page_source, "lxml")
+            div = bs4.find('div', id='highcharts-6').find('div',class_='highcharts-tooltip')
+            if '~' in div.get_text():
+                key, data = str(div.get_text()).split(':')
+                datadictByAge[key]=data
+        except:
+            print("wait...")
+    datadictByAge = sorted(datadictByAge.items(), key=operator.itemgetter(0))
+    datadictBySex = sorted(datadictBySex.items(), key=operator.itemgetter(0))
+    print (datadictByAge)
+    print( datadictBySex)
