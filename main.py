@@ -67,7 +67,6 @@ if __name__=="__main__":
         #print(pathlist)
         now = driver.current_window_handle
         driver.switch_to.window(now)
-        print("_" * 50)
         #꺾은선
         print("\t>>> 꺾은선 추출 시작")
         datadic = dict([('2017-01desktop', '-1'), ('2017-01mobile', '-1'), ('2017-02desktop', '-1'), ('2017-02mobile', '-1'), ('2017-03desktop', '-1'), ('2017-03mobile', '-1'), ('2017-04desktop', '-1'), ('2017-04mobile', '-1'), ('2017-05desktop', '-1'), ('2017-05mobile', '-1'), ('2017-06desktop', '-1'), ('2017-06mobile', '-1'), ('2017-07desktop', '-1'), ('2017-07mobile', '-1'), ('2017-08desktop', '-1'), ('2017-08mobile', '-1'), ('2017-09desktop', '-1'), ('2017-09mobile', '-1'), ('2017-10desktop', '-1'), ('2017-10mobile', '-1'), ('2017-11desktop', '-1'), ('2017-11mobile', '-1'), ('2017-12desktop', '-1'), ('2017-12mobile', '-1')])
@@ -123,7 +122,7 @@ if __name__=="__main__":
             if 'COMMON.TERM' in tmp:
                 break
             if datadictBySex[tmp] == '-1':
-                print(tmp, " parsing error ", end='')
+                print("\t\t",tmp, " parsing error ", end='')
                 datadictBySex[tmp] = input("input ::")
         #if len(datadictBySex) != 4:
          #   print("::: 성별그래프 겹침 발견 데이터확인필요 아래에서 누락 점검")
@@ -162,6 +161,7 @@ if __name__=="__main__":
             #print("::: 나이그래프 겹침 발견 데이터확인필요 아래에서 누락 점검 ")
             #print(datadictByAge)
         print("\t>>> 나이별 추출 종료")
+        print("\t>>> "+tmpkey+" 추출종료 ")
         #datadictBySex = sorted(datadictBySex.items(), key=operator.itemgetter(0))
         #datadictByAge = sorted(datadictByAge.items(), key=operator.itemgetter(0))
         #print(datadic)
@@ -203,6 +203,7 @@ if __name__=="__main__":
                     f.write(str(datadic[tmp]).replace(',','')+',')
         driver.quit()
         cont = str(input(">>> 계속하려면 1, 종료는 0 ::"))
+        print("_" * 50)
         if cont == '0':
             break
 
