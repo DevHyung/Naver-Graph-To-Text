@@ -8,6 +8,7 @@ usage           :python3 main.py
 python_version  :3.6
 required module :selenium+chromewebdriver, csv, bs4
 """
+
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from bs4 import BeautifulSoup
@@ -16,6 +17,9 @@ import operator
 import time
 if __name__=="__main__":
     # Setting variable
+    print("_" * 50)
+    print(">>> Made By Pakr HyungJune copyright @ DevHyung")
+    print(">>> Loding....")
     dir = './chromedriver'  # Driver Path
     driver = webdriver.Chrome(dir)
     # Login start
@@ -26,15 +30,30 @@ if __name__=="__main__":
     time.sleep(1)
     driver.find_element_by_xpath('/html/body/my-app/wrap/welcome-beginner-layer-popup/div[2]/div[1]/a').click()
     driver.find_element_by_xpath('//*[@id="container"]/my-screen/div/div[1]/div/my-screen-board/div/div[1]/ul/li[3]/a').click()
-    driver.switch_to.window(driver.window_handles[1])
+    # 이부분을 수정 하면 됌 내꺼는 2
+    driver.switch_to.window(driver.window_handles[2])
     # Login end
     title = ""
     # if event evoke, parsing start
-    print("Made By HONG copyright Same:")
-    print("수집하려는 키워드의 PC,MOBILE 사용자 수를 입력하세요")
-    numstr = input(" ex: 100,100 왼쪽과 같이 포맷을 맞춘후 입력후엔터를 누르세요 ::")
-    pc,mobile = numstr.split(',')
-    input("그후 키워드를 클릭후 그래프화면이 로딩되면 엔터를 누르세요 ::")
+    print(">>> 키워드를 입력후 조회하기 버튼을 누르고 ")
+    print(">>> 아래에 조회 결과중 추출하고픈 정확한 이름을 입력하세요")
+    key = input(">>> 입력 ::")
+    bs4 = BeautifulSoup(driver.page_source, "lxml")
+    try:
+        tr = bs4.find('table',class_='table table-bordered').find_all('tr')
+        for tmp in tr[2:]:
+            if key == tmp.find('span',class_='keyword').get_text().strip():#같은경우
+                pc = int(tmp.find_all('td',class_=' text-right txt-r')[0].get_text().replace(',',''))
+                mobile = int(tmp.find_all('td', class_=' text-right txt-r')[1].get_text().replace(',',''))
+                pc_click = float(tmp.find_all('td', class_=' text-right txt-r')[2].get_text().replace(',',''))
+                mobile_click = float(tmp.find_all('td', class_=' text-right txt-r')[3].get_text().replace(',',''))
+                break
+    except:
+        print(">>> 정확한 이름을 입력해주세요 !")
+        exit(-1)
+    driver.find_element_by_xpath('//*[@id="wgt-'+key+'"]/td[2]/span/span').click()
+    time.sleep(0.5)
+    z
 
     bs4 = BeautifulSoup(driver.page_source,"lxml")
     table = bs4.find('table',class_="layout-table")
